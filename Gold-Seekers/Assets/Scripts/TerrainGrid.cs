@@ -76,7 +76,6 @@ public class TerrainGrid : MonoBehaviour
             return null;
     }
 
-
     //void OnDrawGizmos()
     //{
     //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));

@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 932408277}
   - component: {fileID: 932408276}
   m_Layer: 0
-  m_Name: Capsule (1)
+  m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -636,7 +636,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7a8df5ee70e5f6b4aaef8198c8367c11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -823,8 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf0c6599901ad34e87b6812b0e1b2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeker: {fileID: 1337630364}
-  target: {fileID: 932408279}
+  grid: {fileID: 0}
 --- !u!1 &1170014429
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,8 +870,9 @@ GameObject:
   - component: {fileID: 1337630363}
   - component: {fileID: 1337630362}
   - component: {fileID: 1337630361}
+  - component: {fileID: 1337630365}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Seeker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,7 +910,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b3c14dfba1040204abc75356bdca1dc4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -947,12 +947,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337630360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.04, y: 0.00017046, z: -4.07}
+  m_LocalPosition: {x: 3.04, y: 0.461, z: -4.07}
   m_LocalScale: {x: 0.45757, y: 0.45757, z: 0.45757}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1337630365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337630360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4609fa307c1f05442880623d761db23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathfinder: {fileID: 1034028081}
+  target: {fileID: 932408279}
+  moveSpeed: 1
+  objectiveDistanceOffset: 1
 --- !u!1 &1873028573
 GameObject:
   m_ObjectHideFlags: 0
