@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class MarkBehaviour : StateMachineBehaviour
 {
+    protected Transform thisTransform;
+    protected Animator currentAnimator;
+    protected Seeker seeker;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateEnter(animator, stateInfo, layerIndex);
+        currentAnimator = animator;
+        thisTransform = animator.transform;
+        seeker = thisTransform.GetComponent<Seeker>();
+        seeker.BeginMark();
+        seeker.OnMineClaimed += MineMarked;
+    }
+
+    private void MineMarked()
+    {
+        seeker.OnMineClaimed -= MineMarked;
+        currentAnimator.SetTrigger("PATROL");
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

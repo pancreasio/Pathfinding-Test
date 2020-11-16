@@ -10,7 +10,7 @@ public class Seeker : MonoBehaviour
     private Entity entity;
     private SphereCollider sphereCollider;
     private List<GameObject> closeMines;
-    public GameObject targetMine;
+    public Mine targetMine;
     public GameManager.GameplayEvent OnMineFound;
     public GameManager.GameplayEvent OnMineClaimed;
 
@@ -36,7 +36,7 @@ public class Seeker : MonoBehaviour
                 Debug.DrawLine(transform.position, mine.transform.position, Color.cyan);
                 if (Vector3.Angle(entity.forwardVector, mine.transform.position - transform.position) < visionAngle)
                 {
-                    targetMine = mine;
+                    targetMine = mine.GetComponent<Mine>();
                     OnMineFound.Invoke();
                     break;
                 }
@@ -79,13 +79,25 @@ public class Seeker : MonoBehaviour
         sphereCollider.enabled = false;
     }
 
+    public void BeginMark()
+    {
+        entity.OnTargetReached = null;
+        entity.OnTargetReached = EndMark;
+        entity.GoToTarget(targetMine.transform.position);
+    }
 
+    public void EndMark()
+    {
+        targetMine.Claim();
+        targetMine = null;
+        if(OnMineClaimed!= null)
+            OnMineClaimed.Invoke();
+    }
 
     void OnTriggerEnter(Collider collision)
     {
         if (collision.transform.tag == "Unclaimed Mine")
         {
-            Debug.Log("collide");
             closeMines.Add(collision.gameObject);
         }
     }
@@ -94,7 +106,6 @@ public class Seeker : MonoBehaviour
     {
         if (collision.transform.tag == "Unclaimed Mine" && closeMines.Contains(collision.gameObject))
         {
-            Debug.Log("end collide");
             closeMines.Remove(collision.gameObject);
         }
     }
