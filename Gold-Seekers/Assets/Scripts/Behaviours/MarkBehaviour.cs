@@ -14,8 +14,8 @@ public class MarkBehaviour : StateMachineBehaviour
         currentAnimator = animator;
         thisTransform = animator.transform;
         seeker = thisTransform.GetComponent<Seeker>();
-        seeker.BeginMark();
         seeker.OnMineClaimed += MineMarked;
+        seeker.BeginMark();
     }
 
     private void MineMarked()

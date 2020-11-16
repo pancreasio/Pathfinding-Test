@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Mine : MonoBehaviour
 {
+    public GameObject flag;
+
+    public bool claimed;
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        flag.SetActive(false);
+        claimed = false;
     }
 
     public void Claim()
     {
-        Debug.Log("claimed");
+        flag.SetActive(true);
+        claimed = true;
+        tag = "Claimed Mine";
     }
 }
