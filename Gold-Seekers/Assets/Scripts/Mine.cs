@@ -5,7 +5,8 @@ using UnityEngine;
 public class Mine : MonoBehaviour
 {
     public GameObject flag;
-
+    public static GameManager.GameplayEvent OnMineClaimed;
+    public static GameManager.GameplayEvent OnMineDrained;
     public bool claimed;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class Mine : MonoBehaviour
 
     public void Claim()
     {
+        if(OnMineClaimed!= null)
+            OnMineClaimed.Invoke();
         flag.SetActive(true);
         claimed = true;
         tag = "Claimed Mine";
