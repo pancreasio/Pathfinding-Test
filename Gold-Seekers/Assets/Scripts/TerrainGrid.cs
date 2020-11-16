@@ -63,6 +63,9 @@ public class TerrainGrid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
+        if (worldPosition.x> transform.position.x + gridSizeX/2f || worldPosition.x < transform.position.x - gridSizeX / 2f ||
+            worldPosition.y > transform.position.y + gridSizeY / 2f || worldPosition.y < transform.position.y - gridSizeY / 2f)
+            return null;
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
@@ -70,25 +73,37 @@ public class TerrainGrid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        if (nodeGrid != null)
-            return nodeGrid[x, y];
-        else
-            return null;
+
+        if (nodeGrid != null && nodeGrid[x,y].walkable)
+                return nodeGrid[x, y];
+            else
+                return null;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    public bool IsPositionValid(Vector3 worldPosition)
+    {
+        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
 
-    //    if (nodeGrid != null)
-    //    {
-    //        foreach (Node n in nodeGrid)
-    //        {
-    //            Gizmos.color = (n.walkable) ? Color.white : Color.red;
-    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-    //        }
-    //    }
-    //}
+        if (percentX < 0 || percentX > 1 || percentY < 0 || percentY > 1)
+            return false;
+        else
+            return true;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+
+        if (nodeGrid != null)
+        {
+            foreach (Node n in nodeGrid)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+    }
 
     public void DrawDebugPath(Pathfinding.TerrainPath path)
     {
