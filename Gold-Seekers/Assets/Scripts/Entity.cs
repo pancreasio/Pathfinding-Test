@@ -5,67 +5,75 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public Pathfinding pathfinder;
-    public Transform target;
     public float moveSpeed;
     public float objectiveDistanceOffset;
+    public Transform target;
 
-    private bool moving;
-    private int currentPathIndex;
-    protected Pathfinding.TerrainPath currentPath;
+
+    public delegate void TargetReachedTask();
+    public TargetReachedTask OnTargetReached;
+
     // Start is called before the first frame update
     void Start()
     {
-        moving = false;
+        StartCoroutine(GoToTargetAndInvokeTask(target));
+        OnTargetReached += ItWorks;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!moving && objectiveDistanceOffset < Vector3.Distance(transform.position, target.position))
-        {
-            currentPath = pathfinder.FindPath(transform.position, target.position);
-            currentPathIndex = 0;
-            moving = true;
-        }
-
-        if (moving)
-        {
-            MoveToNextPoint(Time.deltaTime);
-        }
-
+        
     }
 
-    void MoveToNextPoint(float TimeDelta)
+    void ItWorks()
     {
-        if (currentPath.waypoints.Count < currentPathIndex + 2)
+        Debug.Log("it works!");
+    }
+
+    private IEnumerator GoToTargetAndInvokeTask(Transform targetPosition)
+    {
+        Pathfinding.TerrainPath pathToTarget = pathfinder.FindPath(transform.position, targetPosition.position);
+        int pathIndex = 0;
+        while (!MoveToNextPoint(Time.deltaTime, pathToTarget, ref pathIndex))
         {
-            moving = false;
+            yield return null;
+        }
+
+        if (OnTargetReached != null)
+        {
+            OnTargetReached.Invoke();
+        }
+    }
+
+    bool MoveToNextPoint(float TimeDelta, Pathfinding.TerrainPath targetPath, ref int currentPathIndex)
+    {
+        if (targetPath.waypoints.Count < currentPathIndex + 2)
+        {
             currentPathIndex = 0;
-            return;
+            return true;
         }
 
 
-        Vector3 targetPosition = currentPath.waypoints[currentPathIndex + 1].worldPosition;
+        Vector3 targetPosition = targetPath.waypoints[currentPathIndex + 1].worldPosition;
         Vector3 result = (targetPosition - transform.position).normalized * TimeDelta * moveSpeed;
+
         if ((targetPosition - transform.position + result).magnitude < objectiveDistanceOffset)
         {
-            transform.position = targetPosition;
+            transform.position = new Vector3(targetPosition.x,transform.position.y, targetPosition.z);
             currentPathIndex++;
-            if (currentPath.waypoints.Count < currentPathIndex)
+            if (targetPath.waypoints.Count < currentPathIndex)
             {
-                moving = false;
                 currentPathIndex = 0;
+                return true;
             }
+
+            return false;
         }
         else
         {
             transform.Translate(result);
+            return false;
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        if (currentPath != null)
-            pathfinder.grid.DrawDebugPath(currentPath);
     }
 }
