@@ -6,20 +6,26 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    public Transform seeker, target;
-    TerrainGrid grid;
+    public TerrainGrid grid;
+
+    public class TerrainPath
+    {
+        public TerrainPath(List<Node> pathWaypoints)
+        {
+            waypoints = pathWaypoints;
+        }
+
+        public TerrainPath() { }
+
+        public List<Node> waypoints;
+    };
 
     void Awake()
     {
         grid = GetComponent<TerrainGrid>();
     }
 
-    void Update()
-    {
-        FindPath(seeker.position, target.position);
-    }
-
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+    public TerrainPath FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -45,8 +51,7 @@ public class Pathfinding : MonoBehaviour
 
             if (node == targetNode)
             {
-                RetracePath(startNode, targetNode);
-                return;
+                return RetracePath(startNode, targetNode);
             }
 
             foreach (Node neighbour in grid.GetNeighbours(node))
@@ -68,9 +73,11 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
+
+        return new TerrainPath();
     }
 
-    void RetracePath(Node startNode, Node endNode)
+    TerrainPath RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
@@ -81,9 +88,7 @@ public class Pathfinding : MonoBehaviour
             currentNode = currentNode.parent;
         }
         path.Reverse();
-
-        grid.path = path;
-
+        return new TerrainPath(path);
     }
 
     int GetDistance(Node nodeA, Node nodeB)

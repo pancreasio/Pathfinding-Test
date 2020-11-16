@@ -76,8 +76,22 @@ public class TerrainGrid : MonoBehaviour
             return null;
     }
 
-    public List<Node> path;
-    void OnDrawGizmos()
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+
+    //    if (nodeGrid != null)
+    //    {
+    //        foreach (Node n in nodeGrid)
+    //        {
+    //            Gizmos.color = (n.walkable) ? Color.white : Color.red;
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
+
+    public void DrawDebugPath(Pathfinding.TerrainPath path)
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
@@ -87,7 +101,7 @@ public class TerrainGrid : MonoBehaviour
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 if (path != null)
-                    if (path.Contains(n))
+                    if (path.waypoints.Contains(n))
                         Gizmos.color = Color.black;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
