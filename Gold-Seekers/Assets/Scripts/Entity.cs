@@ -25,25 +25,14 @@ public class Entity : MonoBehaviour
         moving = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void ItWorks()
-    {
-        Debug.Log("it works!");
-    }
-
     public void GoToTarget(Vector3 movementTarget)
     {
+        moving = true;
         StartCoroutine(GoToTargetAndInvokeTask(movementTarget));
     }
 
     private IEnumerator GoToTargetAndInvokeTask(Vector3 targetPosition)
     {
-        moving = true;
         Pathfinding.TerrainPath pathToTarget = pathfinder.FindPath(transform.position, targetPosition);
         int pathIndex = 0;
         while (!MoveToNextPoint(Time.deltaTime, pathToTarget, ref pathIndex))
@@ -60,8 +49,6 @@ public class Entity : MonoBehaviour
         {
             OnTargetReached.Invoke();
         }
-
-        moving = false;
     }
 
     public void InterruptMovement()

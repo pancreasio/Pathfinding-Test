@@ -80,45 +80,34 @@ public class TerrainGrid : MonoBehaviour
                 return null;
     }
 
-    public bool IsPositionValid(Vector3 worldPosition)
-    {
-        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (percentX < 0 || percentX > 1 || percentY < 0 || percentY > 1)
-            return false;
-        else
-            return true;
-    }
+    //    if (nodeGrid != null)
+    //    {
+    //        foreach (Node n in nodeGrid)
+    //        {
+    //            Gizmos.color = (n.walkable) ? Color.white : Color.red;
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    //public void DrawDebugPath(Pathfinding.TerrainPath path)
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (nodeGrid != null)
-        {
-            foreach (Node n in nodeGrid)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-            }
-        }
-    }
-
-    public void DrawDebugPath(Pathfinding.TerrainPath path)
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-
-        if (nodeGrid != null)
-        {
-            foreach (Node n in nodeGrid)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                if (path != null)
-                    if (path.waypoints.Contains(n))
-                        Gizmos.color = Color.black;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-            }
-        }
-    }
+    //    if (nodeGrid != null)
+    //    {
+    //        foreach (Node n in nodeGrid)
+    //        {
+    //            Gizmos.color = (n.walkable) ? Color.white : Color.red;
+    //            if (path != null)
+    //                if (path.waypoints.Contains(n))
+    //                    Gizmos.color = Color.black;
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
 }

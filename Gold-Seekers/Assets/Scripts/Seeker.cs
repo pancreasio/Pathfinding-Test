@@ -28,13 +28,14 @@ public class Seeker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (closeMines != null && closeMines.Count > 0)
+        Debug.DrawLine(transform.position, transform.position + entity.forwardVector, Color.red);
+        if (closeMines.Count > 0)
         {
             foreach (GameObject mine in closeMines)
             {
+                Debug.DrawLine(transform.position, mine.transform.position, Color.cyan);
                 if (Vector3.Angle(entity.forwardVector, mine.transform.position - transform.position) < visionAngle)
                 {
-                    entity.InterruptMovement();
                     targetMine = mine;
                     OnMineFound.Invoke();
                     break;
@@ -58,25 +59,22 @@ public class Seeker : MonoBehaviour
             if (targetNode != null && Physics.CheckSphere(possibleTarget, entity.pathfinder.grid.nodeRadius, entity.pathfinder.grid.unwalkableMask))
             {
                 foundTarget = true;
-                Debug.Log("fond target: " + foundTarget);
                 entity.OnTargetReached += FindPatrolTarget;
                 entity.GoToTarget(possibleTarget);
                 break;
             }
         }
-        if(iterations >= 1000)
-            Debug.Log("no viable path");
     }
 
     public void BeginPatrol()
     {
-        Debug.Log("begun patrol");
         sphereCollider.enabled = true;
         FindPatrolTarget();
     }
 
     public void StopPatrol()
     {
+        entity.InterruptMovement();
         closeMines.Clear();
         sphereCollider.enabled = false;
     }
@@ -87,14 +85,16 @@ public class Seeker : MonoBehaviour
     {
         if (collision.transform.tag == "Unclaimed Mine")
         {
+            Debug.Log("collide");
             closeMines.Add(collision.gameObject);
         }
     }
 
     void OnTriggerExit(Collider collision)
     {
-        if (collision.transform.tag == "Unclaimed Mine" && closeMines.Contains( collision.gameObject))
+        if (collision.transform.tag == "Unclaimed Mine" && closeMines.Contains(collision.gameObject))
         {
+            Debug.Log("end collide");
             closeMines.Remove(collision.gameObject);
         }
     }
