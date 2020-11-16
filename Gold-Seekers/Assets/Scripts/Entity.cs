@@ -7,7 +7,6 @@ public class Entity : MonoBehaviour
     public Pathfinding pathfinder;
     public float moveSpeed;
     public float objectiveDistanceOffset;
-    public Transform target;
     public Vector3 forwardVector;
 
     public delegate void TargetReachedTask();
@@ -18,8 +17,6 @@ public class Entity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(GoToTargetAndInvokeTask(target));
-        //OnTargetReached += ItWorks;
         forwardVector = Vector3.zero;
         interruptMovement = false;
         moving = false;
