@@ -11,12 +11,24 @@ public class Mine : MonoBehaviour
 
     public int maxGold;
     private int remainingGold;
+
+    private bool drained;
     // Start is called before the first frame update
     void Start()
     {
         flag.SetActive(false);
         isBeingDrained = false;
         remainingGold = maxGold;
+        drained = false;
+    }
+
+    void Update()
+    {
+        if (remainingGold <= 0)
+        {
+            DestroyMine();
+        }
+
     }
 
     public void Claim()
@@ -33,6 +45,7 @@ public class Mine : MonoBehaviour
         if (requestedGold > remainingGold)
         {
             remainingGold = 0;
+            drained = true;
             return requestedGold - remainingGold;
         }
         else
@@ -40,16 +53,25 @@ public class Mine : MonoBehaviour
             remainingGold -= requestedGold;
             return requestedGold;
         }
-
     }
 
     public void StopMiningGold()
     {
         isBeingDrained = false;
+        if(remainingGold<0)
+            DestroyMine();
+    }
+
+    void DestroyMine()
+    {
+        if (OnMineDrained != null)
+            OnMineDrained.Invoke();
+
+        Destroy(this.gameObject);
     }
 
     public bool IsDrained()
     {
-        return (remainingGold > 0);
+        return (remainingGold <= 0);
     }
 }

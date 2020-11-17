@@ -59,7 +59,6 @@ public class Miner : Worker
                 currentGold += mine.MineGold(goldDrainedPerSecond);
                 timer = 0f;
             }
-
             yield return null;
         }
         StopMining();
@@ -85,6 +84,7 @@ public class Miner : Worker
     {
         entity.OnTargetReached = null;
         parentBase.DepositGold(currentGold);
+        currentGold = 0;
         if (OnFinishedDepositing!= null)
             OnFinishedDepositing.Invoke();
     }

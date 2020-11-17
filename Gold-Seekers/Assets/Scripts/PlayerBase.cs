@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerBase : MonoBehaviour
     public int seekerPrice;
     public int minerPrice;
 
+    public Text goldText;
+
     public GameObject seekerPrefab;
     public GameObject minerPrefab;
     public Transform seekerSpawnPoint;
@@ -17,6 +20,7 @@ public class PlayerBase : MonoBehaviour
 
     public Pathfinding pathfinder;
 
+    public int startingGold;
     private int gold;
 
     private int seekerCount;
@@ -25,22 +29,27 @@ public class PlayerBase : MonoBehaviour
 
     private void Start()
     {
-        gold = 0;
+        gold = startingGold;
         seekerCount = 0;
         minerCount = 0;
+        UpdateGoldText();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && gold >= seekerPrice)
         {
+            gold -= seekerPrice;
             SpawnSeeker();
+            UpdateGoldText();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && gold >= minerPrice)
         {
+            gold -= minerPrice;
             SpawnMiner();
+            UpdateGoldText();
         }
     }
 
@@ -64,8 +73,14 @@ public class PlayerBase : MonoBehaviour
         }
     }
 
+    void UpdateGoldText()
+    {
+        goldText.text = "current gold: " + gold;
+    }
+
     public void DepositGold(int goldAmmount)
     {
-
+        gold += goldAmmount;
+        UpdateGoldText();
     }
 }
