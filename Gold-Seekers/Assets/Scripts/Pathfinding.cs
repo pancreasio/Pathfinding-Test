@@ -15,7 +15,10 @@ public class Pathfinding : MonoBehaviour
             waypoints = pathWaypoints;
         }
 
-        public TerrainPath() { }
+        public TerrainPath()
+        {
+            waypoints = new List<Node>();
+        }
 
         public List<Node> waypoints;
     };

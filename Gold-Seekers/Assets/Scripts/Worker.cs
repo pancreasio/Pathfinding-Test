@@ -53,7 +53,7 @@ public class Worker : MonoBehaviour
             Vector2 circleVector = Random.insideUnitCircle * patrolRadius;
             Vector3 possibleTarget = new Vector3(transform.position.x + circleVector.x, transform.position.y, transform.position.z + circleVector.y);
             targetNode = entity.pathfinder.grid.NodeFromWorldPoint(possibleTarget);
-            if (targetNode != null && Physics.CheckSphere(possibleTarget, entity.pathfinder.grid.nodeRadius, entity.pathfinder.grid.unwalkableMask))
+            if (targetNode != null/* && Physics.CheckSphere(possibleTarget, entity.pathfinder.grid.nodeRadius, entity.pathfinder.grid.unwalkableMask)*/)
             {
                 foundTarget = true;
                 entity.OnTargetReached += FindPatrolTarget;

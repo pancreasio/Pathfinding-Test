@@ -56,7 +56,7 @@ public class Entity : MonoBehaviour
 
     bool MoveToNextPoint(float TimeDelta, Pathfinding.TerrainPath targetPath, ref int currentPathIndex)
     {
-        if (targetPath.waypoints.Count < currentPathIndex + 2)
+        if (targetPath == null  || targetPath.waypoints.Count < currentPathIndex + 2)
         {
             currentPathIndex = 0;
             return true;

@@ -57,7 +57,7 @@ public class MineManager : MonoBehaviour
             Vector3 possibleSpot = new Vector3(grid.transform.position.x + Random.Range(-grid.gridWorldSize.x/2, grid.gridWorldSize.x/2), transform.position.y,
                 grid.transform.position.z + Random.Range(-grid.gridWorldSize.y / 2, grid.gridWorldSize.y / 2));
             targetNode = grid.NodeFromWorldPoint(possibleSpot);
-            if (targetNode != null && Physics.CheckSphere(possibleSpot, grid.nodeRadius, grid.unwalkableMask))
+            if (targetNode != null /*&& Physics.CheckSphere(possibleSpot, grid.nodeRadius, grid.unwalkableMask)*/)
             {
                 foundSpot = true;
                 Instantiate(minePrefab, possibleSpot, Quaternion.identity);

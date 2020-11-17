@@ -74,7 +74,7 @@ public class TerrainGrid : MonoBehaviour
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
-        if (nodeGrid != null && nodeGrid[x,y].walkable)
+        if (nodeGrid != null && !Physics.CheckSphere(worldPosition, nodeRadius, unwalkableMask))
                 return nodeGrid[x, y];
             else
                 return null;
