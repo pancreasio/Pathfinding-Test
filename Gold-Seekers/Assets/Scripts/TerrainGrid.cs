@@ -80,19 +80,19 @@ public class TerrainGrid : MonoBehaviour
                 return null;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-    //    if (nodeGrid != null)
-    //    {
-    //        foreach (Node n in nodeGrid)
-    //        {
-    //            Gizmos.color = (n.walkable) ? Color.white : Color.red;
-    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-    //        }
-    //    }
-    //}
+        if (nodeGrid != null)
+        {
+            foreach (Node n in nodeGrid)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+    }
 
     //public void DrawDebugPath(Pathfinding.TerrainPath path)
     //{

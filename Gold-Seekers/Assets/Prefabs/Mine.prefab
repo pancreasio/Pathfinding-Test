@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flag: {fileID: 7664778297488188607}
   claimed: 0
+  maxGold: 30
 --- !u!54 &7664778295539732368
 Rigidbody:
   m_ObjectHideFlags: 0

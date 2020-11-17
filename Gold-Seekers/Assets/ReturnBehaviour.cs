@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PatrolBehaviour : StateMachineBehaviour
+public class ReturnBehaviour : StateMachineBehaviour
 {
     protected Transform thisTransform;
     protected Animator currentAnimator;
-    protected bool isSeeker;
-    protected Worker worker;
+    protected Miner miner;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -15,18 +14,22 @@ public class PatrolBehaviour : StateMachineBehaviour
         base.OnStateEnter(animator, stateInfo, layerIndex);
         currentAnimator = animator;
         thisTransform = animator.transform;
-        worker = thisTransform.GetComponent<Worker>();
-
-        worker.BeginPatrol();
-        worker.OnMineFound += MineFound;
+        miner = thisTransform.GetComponent<Miner>();
+        miner.OnFinishedDepositing += FinishedDepositing;
+        miner.StartReturning();
     }
 
-    private void MineFound()
+    private void FinishedDepositing()
     {
-        worker.OnMineFound -= MineFound;
-        worker.StopPatrol();
-        currentAnimator.SetTrigger("GOTOMINE");
+        miner.OnFinishedMining -= FinishedDepositing;
+        currentAnimator.SetTrigger("PATROL");
     }
+
+    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
+    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

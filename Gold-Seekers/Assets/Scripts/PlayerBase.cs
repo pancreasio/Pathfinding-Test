@@ -48,7 +48,9 @@ public class PlayerBase : MonoBehaviour
     {
         if (minerCount < maxMiners)
         {
-            Instantiate(minerPrefab, minerSpawnPoint.position, Quaternion.identity).GetComponent<Entity>().pathfinder = pathfinder;
+            GameObject result = Instantiate(minerPrefab, minerSpawnPoint.position, Quaternion.identity);
+            result.GetComponent<Entity>().pathfinder = pathfinder;
+            result.GetComponent<Miner>().parentBase = this;
             minerCount++;
         }
     }
@@ -60,5 +62,10 @@ public class PlayerBase : MonoBehaviour
             Instantiate(seekerPrefab, seekerSpawnPoint.position, Quaternion.identity).GetComponent<Entity>().pathfinder = pathfinder;
             seekerCount++;
         }
+    }
+
+    public void DepositGold(int goldAmmount)
+    {
+
     }
 }
